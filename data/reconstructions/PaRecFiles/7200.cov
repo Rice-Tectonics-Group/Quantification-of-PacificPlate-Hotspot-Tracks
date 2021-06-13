@@ -1,0 +1,22 @@
+eig2conreg conversion from input file: stdin
+                       to output file: stdout
+rotation pole: alat, alon, omega
+52.520000	-77.440000	42.390000
+confidence level (0.888 for 3D->2D 95%)
+ 0.888
+kappahat, degrees of freedom
+ 1.0	10000.0
+dummy value
+0
+rotation matrix ahat:
+0.74315   -0.555546   -0.372955
+0.514456   0.83079   -0.212423
+0.427858   -0.0340068   0.903206
+covariance matrix:
+ 1.361491e-04   -1.715172e-04   7.989399e-05
+ -1.715172e-04   7.621294e-04   -2.226423e-04
+ 7.989399e-05   -2.226423e-04   1.332779e-04
+H11.2 matrix:
+11829.3   1153.27   -5164.33
+1153.27   2675.6   3777.92
+-5164.33   3777.92   16907.2

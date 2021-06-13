@@ -1,0 +1,6 @@
+PA,HS,Butterworth Geodynamic slab driven PA absolute plate motion model,,,,,,,,,,,,
+lat,lon,rot,rot_rate,start_age,stop_age,s1start_age,s1stop_age,vxx,vyy,vzz,vxy,vxz,vyz,source
+65.97,314.5,31.39,0.75,0,42.0,0,0,0,0,0,0,0,0,Butterworth et al. 2014
+66.31,312.1,33.66,0.72,0,47.0,0,0,0,0,0,0,0,0,Butterworth et al. 2014
+69.52,299.000,37.97,0.73,0,52.0,0,0,0,0,0,0,0,0,Butterworth et al. 2014
+63.86,299.500,46.48,0.75,0,62.0,0,0,0,0,0,0,0,0,Butterworth et al. 2014

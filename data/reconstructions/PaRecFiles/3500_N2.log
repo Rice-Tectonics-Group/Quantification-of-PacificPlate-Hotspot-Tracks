@@ -1,0 +1,28 @@
+Script started on Wed 11 Nov 2020 05:56:22 PM CST
+nhsin.txt
+69.49,-72.18,27.75000
+ Enter datafile name: 
+ Enter Best fit Rotation (lat, lon, ang): 
+   69.489999999999995       -72.180000000000007        27.750000000000000     
+ Data read in: 
+   20.15     205.32    0.8   0.5  287.7
+   29.89     178.53    2.0   0.5  295.2
+ Rotated: 
+   20.15     205.32    0.8   0.5  287.7
+   20.30    -154.95    2.0   0.5  -63.7
+ Data read in: 
+  -50.46     222.99    2.0   0.4  276.7
+  -41.92     196.38    3.9   0.4  312.2
+ Rotated: 
+  -50.46     222.99    2.0   0.4  276.7
+  -51.32    -135.31    3.9   0.4  129.1
+ Eigens: Lat, Lon, Evalue, Error level at evalue
+ Initial Error=   0.14024962565275190     
+             -63.62    132.19      2.02      1.14
+ Initial Error=   0.14024962565257579     
+             -26.02    -37.68      0.42      1.15
+ Initial Error=   0.14024962565257759     
+              -4.03   -129.65      0.93      1.15
+ finished
+
+Script done on Wed 11 Nov 2020 05:56:22 PM CST

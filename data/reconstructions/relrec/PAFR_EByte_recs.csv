@@ -1,0 +1,17 @@
+PA	FR	Motion of Pacific relative to Farallon Plate												
+lat	lon	rot	rot_rate	start_age	stop_age	s1start_age	s1stop_age	vxx	vyy	vzz	vxy	vxz	vyz	source
+60.11	-89.75	-14.88		0	11.056	0	0	0	0	0	0	0	0	Muller et al. 2008
+73.53	-92.61	-31.08		0	23	0	0	0	0	0	0	0	0	Muller et al. 2008
+76.1	-110.7	-45.27		0	33.157	0	0	0	0	0	0	0	0	Tebbens and Cande 1997
+84.45	-138.06	-53.87		0	40.145	0	0	0	0	0	0	0	0	Wright et al. 2015
+85.024	-156.426	-59.136		0	43.432	0	0	0	0	0	0	0	0	Wright et al. 2015
+85.5	168.93	-63.57		0	47.349	0	0	0	0	0	0	0	0	Wright et al. 2015
+85.259	159.376	-65.276		0	49.344	0	0	0	0	0	0	0	0	Wright et al. 2015
+84.885	151.84	-67.419		0	52.62	0	0	0	0	0	0	0	0	Wright et al. 2015
+84.14	138.7	-70.14		0	57.101	0	0	0	0	0	0	0	0	Wright et al. 2015
+83.858	135.28	-71.157		0	58.959	0	0	0	0	0	0	0	0	Wright et al. 2015
+83.289	129.813	-73.295		0	62.517	0	0	0	0	0	0	0	0	Wright et al. 2015
+83.042	127.505	-73.889		0	63.494	0	0	0	0	0	0	0	0	Wright et al. 2015
+82.43	124.34	-77.55		0	68.369	0	0	0	0	0	0	0	0	Wright et al. 2015
+80.29	111.03	-84.97		0	79.9	0	0	0	0	0	0	0	0	Wright et al. 2016
+79.29	106.41	-87.38		0	83.64	0	0	0	0	0	0	0	0	Wright et al. 2016

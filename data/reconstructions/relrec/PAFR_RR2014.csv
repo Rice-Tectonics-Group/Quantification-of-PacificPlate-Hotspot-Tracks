@@ -1,0 +1,13 @@
+PA	FR	Motion of PA relative to HS												
+lat	lon	rot	rot_rate	start_age	stop_age	s1start_age	s1stop_age	vxx	vyy	vzz	vxy	vxz	vyz	source
+70.065	-103.88	-49.65		0	33.06	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+73.96	-110.185	-53.97		0	36.62	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+76.181	-113	-56		0	38.43	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+77.747	-117.394	-58.232		0	40.13	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+79.132	-123	-61		0	42.55	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+79.735	-127.584	-63.662		0	43.799	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+82.402	-149.315	-69.88		0	50.78	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+82.931	-159.47	-72.233		0	53.35	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+83.167	170.027	-80.229		0	64.75	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+82.414	151.315	-86.587		0	73.62	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
+80.497	126.564	-93.18		0	83	0	0	0	0	0	0	0	0	Rowan & Rowley (2014)
