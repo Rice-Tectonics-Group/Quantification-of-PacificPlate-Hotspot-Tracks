@@ -1,0 +1,17 @@
+Region	Event	top	base	Uncertainty	Constraint Type	Is Span	Citation	hatch	color
+Arctic	Seasonal Sea Ice in the Arctic	47	46		Based on drill core lithologies	1	Stien (2019)	//	white
+South Atlantic	South America-Antarctica Diverge Faster	48	45.724		Magnetic isochrons (just before C21o to C21y) south Scotia Sea between Antarctica and South America	1	Eagles et al. (2016); Livermore et al. (2005); Livermore et al. (2007)	//	tab:green
+Indian Ocean	Full India-Eurasia Collision	41.7	39.1		Based on geochonology of arc in Karakoram in western Himalaya	0	Bouilhol et al. (2013)	Null	tab:orange
+Indian Ocean	Acceleration of Australia-Antarctica	43.432	33.705		(~20o to 13o) Though Sutherland (1995) suggests it may be as old as ~21y or ~45 Ma	1	Whittaker et al. (2008); Cande and Stock (2004); Sutherland (1995); This Study	//	tab:orange
+Indian Ocean	Uplift of New Caledonia & NZ	46	44		Lithographic transitions, biostratographically and geomagnetically constrained, by: the Sommet-Khain section, the Noumea section, and 4 New Zealand Sections	1	Dallanave et al. (2020)	//	tab:orange
+Indian Ocean	Smooth-Rough Transition across the Carlsberg Ridge	47.349	45.724		Magnetic isochrons (C21o to C21y) across the ridge analysed against the VGG of Sandwell	1	Cande and Patriat (2015); Cande et al. (2010); Sandwell et al. (2014); This Study	//	tab:orange
+Indian Ocean	India-Africa & -Antarctica Seafloor Spreading Rates Halved	49.344	45.724		(~22o to 21y)	1	Cande and Patriat (2015); Cande et al. (2010); This Study	//	tab:orange
+Indian Ocean	Start of Initial India-Eurasia Collision	51.7	48.7		Based on geochonology of Kohistan-Ladakh Arc granitoids	0	Bouilhol et al. (2013)	Null	tab:orange
+Pacific Ocean	Pacific-Kula Spreading Ceases	41.154	40.145		C18r 	0	Lonsdale (1988)	//	#aec7e8
+Pacific Ocean	Antarctic-Pacific Change in Plate Motion Direction	47.349	43.432		Between the 21o-20o reversal in the vector endpoint diagrams	1	Wright et al. (2016); Croon et al. (2008); reanalysed in This Study	//	#aec7e8
+Pacific Ocean	Farallon- & Vancouver-Pacific Seafloor Spreading Doubles	49.344	43.432		22o-20o for Farallon and maybe until 18o (~40 Ma) for Vancouver but a bit unclear	1	Wright et al. (2016); reanalysied in This Study	//	#aec7e8
+Pacific Ocean	Bend in Pacific Hotspot Tracks	48.4	46.4	1 Ma	Ar-Ar and K-Ar ages extrapolated by inversion	0	This Study	Null	tab:red
+Pacific Ocean	Tonga-Kermadec Subduction Initiation	51.2	43		U-Pb and Ar-Ar Radiometric dates from dredges along the Tonga forarc and trench for the older age. The younger age is better bounded by the onset of rapid seafloor spreading between Australia and Antarctica and the subsidence of the New Caledonia Trough and the uplift of New Caledonia and New Zealand. See Suntherland et al. 2020 for a better summary.	1	Cande and Stock (2004), Whittaker et al. (2008), Meffre et al. (2012), Suntherland et al. (2020)	//	tab:blue
+Pacific Ocean	IBM Subduction Initiation	52	48		Radiometric dates of FAB; Radiolarian and Formanifera just above Theolitic Basement at site U1438; Geochemical relation of theolitic basement to FAB	1	Arculus et al. (2015); Sager (personal communication about Leg 352)	//	tab:blue
+Global	Hypothesized True Polar Wander	53.983	47.349		(24o to 21o)	1	Woodworth et al. (IP)	//	tab:purple
+Global	EECO	54.1	49.1		Orbital Tuning of Shatsky Rise and Walvis Ridge dO18 and dC13 data	0	Westerhold et al. 2018	//	tab:purple
