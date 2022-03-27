@@ -1,8 +1,0 @@
-PA	VA	Motion of Pacific relative to Vancouver												
-lat	lon	rot	rot_rate	start_age	stop_age	s1start_age	s1stop_age	vxx	vyy	vzz	vxy	vxz	vyz	source
-81.35	-117.91	-30.67		0	27.859	0	0	0	0	0	0	0	0	Wright et al. 2016
--75.414	35.037	5.135		27.859	33.157	0	0	0	0	0	0	0	0	Wright et al. 2016
--72.935	38.385	7.125		33.157	40.145	0	0	0	0	0	0	0	0	Wright et al. 2015
--71.865	39.6	6.217		40.145	47.349	0	0	0	0	0	0	0	0	Wright et al. 2015
--71.145	37.555	1.319		47.349	49.344	0	0	0	0	0	0	0	0	Wright et al. 2015
--71.81	36.938	1.454		49.344	52.62	0	0	0	0	0	0	0	0	Wright et al. 2015

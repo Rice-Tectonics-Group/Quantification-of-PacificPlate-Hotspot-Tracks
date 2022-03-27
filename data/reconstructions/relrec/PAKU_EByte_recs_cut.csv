@@ -1,7 +1,0 @@
-PA	KU	Motion of Pacific Relative to Kula												
-lat	lon	rot	rot_rate	start_age	stop_age	s1start_age	s1stop_age	vxx	vyy	vzz	vxy	vxz	vyz	source
-37.521	153.335	-24.186		0	57.101	0	0	0	0	0	0	0	0	Wright et al. 2016
-37.141	151.092	-26.812		0	63.494	0	0	0	0	0	0	0	0	Wright et al. 2016
-35.99	147.87	-30.51		0	68.369	0	0	0	0	0	0	0	0	Wright et al. 2016
-35.134	144.873	-37.943		0	74.309	0	0	0	0	0	0	0	0	Wright et al. 2016
-30.22	139.25	-38.5		0	83.64	0	0	0	0	0	0	0	0	Wright et al. 2016

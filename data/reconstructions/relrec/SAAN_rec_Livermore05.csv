@@ -1,9 +1,0 @@
-SA	AN	Motion of West Antarctica to South America; Antarctica fixed												
-lat	lon	rot	rot_rate	start_age	stop_age	s1start_age	s1stop_age	vxx	vyy	vzz	vxy	vxz	vyz	source
--85.88	146.44	-6.79		0	19.722	0	0	0	0	0	0	0	0	Livermore et al. 2005
--73.48	165.27	-7.35		0	25.987	0	0	0	0	0	0	0	0	Livermore et al. 2005
--75.11	172.61	-10.26		0	33.705	0	0	0	0	0	0	0	0	Livermore et al. 2005
--75.85	179.21	-12.46		0	40.145	0	0	0	0	0	0	0	0	Livermore et al. 2005
--77.15	187.47	-14.02		0	43.432	0	0	0	0	0	0	0	0	Livermore et al. 2005
--79.92	198.47	-16.42		0	47.349	0	0	0	0	0	0	0	0	Livermore et al. 2005
--78.43	225.32	-19.31		0	68.196	0	0	0	0	0	0	0	0	Livermore et al. 2005
