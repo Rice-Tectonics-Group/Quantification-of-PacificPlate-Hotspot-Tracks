@@ -18,7 +18,6 @@ from geographiclib.geodesic import Geodesic
 import pyrot.apwp as apwp
 from pyrot.reconstruction import PlateReconstruction
 from pyrot.rot import Rot,get_pole_arc_misfit_uncertainty,fast_fit_circ,plot_error_from_points
-import pyrot.max as pymax
 from multi_circ_inv import fit_circ
 from functools import reduce
 from time import time

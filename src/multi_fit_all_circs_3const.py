@@ -22,11 +22,7 @@ from multi_circ_inv import fit_circ,pole_arc_fitfunc
 from functools import reduce
 from time import time
 from scipy.interpolate import PchipInterpolator
-import pmagpy.pmag as pmag
 from mpl_toolkits.mplot3d import Axes3D
-
-#TODO
-#Search models where the bend is an adjustable parameter anywhere between 40-60 Ma
 
 ###############################################Fixed Values
 hi_color = "#C4A58E"#plt.rcParams['axes.prop_cycle'].by_key()['color'][2]
@@ -184,9 +180,6 @@ for hs_i,hs_name in enumerate(hs_names):
 
     if hs_name == "Hawaii":
         heb_age_start,heb_age_end,heb_age = 47.,49.,48.
-#        hi_data = data[data["Age (Ma)"]<heb_age_start]
-#        tr_data = data[(data["Age (Ma)"]>heb_age_start) & (data["Age (Ma)"]<heb_age_end)]
-#        em_data = data[data["Age (Ma)"]>=heb_age_end]
         hi_data = data[data["Latitude"]<33.]
         tr_data = data[(data["Latitude"]>33.) & (data["Latitude"]<33.)]
         em_data = data[data["Latitude"]>33.]
@@ -199,27 +192,15 @@ for hs_i,hs_name in enumerate(hs_names):
         sml_circ_hi = True
     elif hs_name == "Louisville" or hs_name == "Louisville HK19":
         heb_age_start,heb_age_end,heb_age = 47.,49.,48.
-#        hi_data = data[data["Age (Ma)"]<heb_age_start]
-#        tr_data = data[(data["Age (Ma)"]>heb_age_start) & (data["Age (Ma)"]<heb_age_end)]
-#        em_data = data[data["Age (Ma)"]>=heb_age_end]
-        hi_data = data[data["Longitude"]>-169.]
-        tr_data = data[(data["Longitude"]>-169.) & (data["Longitude"]<=-169.)]
-        em_data = data[data["Longitude"]<-169.]
         window = [175.,225.,-55.,-20.]
         bend_window=[-39.,-35.,189.,193.]
         if HERM: age_min,age_max,age_step = 0.,75.,5.
         else: age_min,age_max,age_step = 0.,80.,5.
-#        if "Heaton" in hs_name: title = "Louisville Chain (Adjusted for trapped $^{40}$Ar)"
-#        else: title = "Louisville Chain"
         title = "Louisville"
         em_a,em_b,em_phi = 6.5,0.50,-32. # Louisville
         sml_circ_hi = True
     elif hs_name == "Rurutu":
         heb_age_start,heb_age_end,heb_age = 47.,49.,48.
-        cut_age = 20.
-        hi_data = data[data["Age (Ma)"]<cut_age]
-        tr_data = data[(data["Age (Ma)"]>cut_age) & (data["Age (Ma)"]<cut_age)]
-        em_data = data[data["Age (Ma)"]>=cut_age]
         konrad_ru_bend = [-8.5,178.5]
         window = [168.,214.,-30.,10.]
         bend_window=[-13.,5.,172.,190.]
@@ -229,8 +210,8 @@ for hs_i,hs_name in enumerate(hs_names):
         em_a,em_b,em_phi = 6.5,0.50,-32. # Rurutu
         sml_circ_hi = True
     else: raise IOError("No HS Track named %s known must edit script"%hs_name)
-
-#    em_data = em_data.reindex(sorted(em_data.index,key=cmp_age_lat_data))
+    hi_data = data[data["SubTrack"]=="HI"]
+    em_data = data[data["SubTrack"]=="EM"]
 
     good_hi_data = hi_data[hi_data["Quality"]=="g"]
     good_em_data = em_data[em_data["Quality"]=="g"]
@@ -1332,185 +1313,4 @@ else:
     bfig.savefig("./results/3const_Bend_Check_%ddeg.png"%deg,dpi=200,bbox_inches="tight")
     fig_res.savefig("./results/3const_Bend_AgeModelsRes_%ddeg.png"%deg,dpi=200,bbox_inches="tight")
 #    fig_poles.savefig("./results/3const_Bend_GeoModelsMaster_%ddeg.png"%deg,dpi=200,bbox_inches="tight")
-
-######################################################Inter-Hotspot difference figure
-
-fig_age_points = plt.figure(figsize=(8,11),dpi=200)
-fig_age_points.subplots_adjust(left=padding,bottom=padding,right=1-padding,top=1-padding,wspace=0.05,hspace=0.2)
-points_pos = 311
-age_step_dis = .1
-ages = np.arange(40.,55.+age_step_dis,age_step_dis)
-
-for hs1 in ["Hawaii","Rurutu","Louisville HK19"]:
-    ax_points = fig_age_points.add_subplot(points_pos,projection="3d")
-
-    age_m_dis = []
-    hi_points,hi_azis,em_points,em_azis = [],[],[],[]
-    for age in ages:
-        age_dis = ((age-inv_data[hs1]["HIpols"][1])/inv_data[hs1]["HIpols"][0] - inv_data[hs1]["HI_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs1]["HIDis"]))
-        hi_geodict = geoid.ArcDirect(inv_data[hs1]["HILat"],inv_data[hs1]["HILon"],inv_data[hs1]["HI_start_azi"]+age_dis,-inv_data[hs1]["HIDis"]) #modeled geographic point for age
-        hi_points.append([hi_geodict["lat2"],hi_geodict["lon2"]])
-        hi_azis.append(age_dis)
-
-        age_dis = ((age-inv_data[hs1]["EMpols"][1])/inv_data[hs1]["EMpols"][0] - inv_data[hs1]["EM_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs1]["EMDis"]))
-        em_geodict = geoid.ArcDirect(inv_data[hs1]["EMLat"],inv_data[hs1]["EMLon"],inv_data[hs1]["EM_start_azi"]+age_dis,-inv_data[hs1]["EMDis"]) #modeled geographic point for age
-        em_points.append([em_geodict["lat2"],em_geodict["lon2"]])
-        em_azis.append(age_dis)
-
-        age_m_dis.append(geoid.Inverse(hi_geodict["lat2"],hi_geodict["lon2"],em_geodict["lat2"],em_geodict["lon2"])["a12"])
-
-    min_dis = 1e9
-    for hi_point in hi_points:
-        for em_point in em_points:
-            dis = geoid.Inverse(*hi_point,*em_point)["a12"]
-            if dis<min_dis:
-                min_dis=dis
-                hi_min_idx=hi_points.index(hi_point)
-                em_min_idx=em_points.index(em_point)
-
-    print(min_dis,hi_min_idx,hi_points[hi_min_idx],hi_azis[hi_min_idx],ages[hi_min_idx])
-    print(em_min_idx,em_points[em_min_idx],em_azis[em_min_idx],ages[em_min_idx])
-
-#    ax_points.plot(hi_lons,hi_lats,ages,color=hi_color)
-    ax_points.plot(ages,age_m_dis,color=hi_color)
-    print(ages[age_m_dis.index(min(age_m_dis))],min(age_m_dis))
-    ax_points.set_title(hs1)
-
-    points_pos += 1
-
-#fig_age_points.savefig("./results/3const_Bend_%ddeg.pdf"%deg,dpi=200,bbox_inches="tight")
-
-fig_dis = plt.figure(figsize=(11,8),dpi=200)
-fig_dis.subplots_adjust(left=padding,bottom=padding,right=1-padding,top=1-padding,wspace=0.05,hspace=0.2)
-dis_pos = 111
-age_step_dis = 1.
-ax_dis = fig_dis.add_subplot(dis_pos)
-
-fig_div = plt.figure(figsize=(8,11),dpi=200)
-fig_div.subplots_adjust(left=padding,bottom=padding,right=1-padding,top=1-padding,wspace=0.05,hspace=0.2)
-div_pos = 311
-
-hi_ages_iter = np.arange(0.,49.,age_step_dis)
-em_ages_iter = np.arange(45.,81.,age_step_dis)
-for k,(hs1,hs2) in enumerate(subsets(["Hawaii","Rurutu","Louisville HK19"],2)):
-    color = plt.rcParams['axes.prop_cycle'].by_key()['color'][k]
-    ax_div = fig_div.add_subplot(div_pos)
-
-    if hs1!="Rurutu" and hs2!="Rurutu":
-        hi_inter_hs_dis,hi_inter_hs_dis_sds,hi_azis,hi_ages = [],[],[],[]
-        for age in hi_ages_iter:
-            if len(inv_data[hs1]["HIpols"])==2: age1_dis = ((age-inv_data[hs1]["HIpols"][1])/inv_data[hs1]["HIpols"][0] - inv_data[hs1]["HI_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs1]["HIDis"]))
-            elif len(inv_data[hs1]["HIpols"])==3: age1_dis = ((((-inv_data[hs1]["HIpols"][1]+np.sqrt(inv_data[hs1]["HIpols"][1]**2 - 4*inv_data[hs1]["HIpols"][0]*(inv_data[hs1]["HIpols"][2]-age)))/(2*inv_data[hs1]["HIpols"][0]))) - inv_data[hs1]["HI_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs1]["HIDis"]))
-            else: raise ValueError("Cannot determine simple inverse for Hawaiian age model of %s given model with %d parameters"%(hs1,len(inv_data[hs1]["HIpols"])))
-            hs1_geodict = geoid.ArcDirect(inv_data[hs1]["HILat"],inv_data[hs1]["HILon"],inv_data[hs1]["HI_start_azi"]+age1_dis,-inv_data[hs1]["HIDis"]) #modeled geographic point for age
-            hs1_a = np.sqrt(2)*np.sqrt((inv_data[hs1]["HIsds"][1]**2)*(inv_data[hs1]["HIpols"][1]/inv_data[hs1]["HIpols"][0])**2 + (inv_data[hs1]["HIsds"][0]**2)*(-(age-inv_data[hs1]["HIpols"][1])*inv_data[hs1]["HIpols"][0]**-2)**2)*np.sin(np.deg2rad(inv_data[hs1]["HIDis"]))
-            hs1_b = np.sqrt(2)*(33./111.113)
-            hs1_phi = (hs1_geodict["azi2"]+90.)
-#            print(hs1,inv_data[hs1]["HILat"],inv_data[hs1]["HILon"],inv_data[hs1]["HI_start_azi"],age,age1_dis,hs1_geodict["lat2"],hs1_geodict["lon2"],hs1_geodict["azi1"])
-
-            if len(inv_data[hs2]["HIpols"])==2: age2_dis = ((age-inv_data[hs2]["HIpols"][1])/inv_data[hs2]["HIpols"][0] - inv_data[hs2]["HI_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs2]["HIDis"]))
-            elif len(inv_data[hs2]["HIpols"])==3: age2_dis = ((((-inv_data[hs2]["HIpols"][1]+np.sqrt(inv_data[hs2]["HIpols"][1]**2 - 4*inv_data[hs2]["HIpols"][0]*(inv_data[hs2]["HIpols"][2]-age)))/(2*inv_data[hs2]["HIpols"][0]))) - inv_data[hs2]["HI_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs2]["HIDis"]))
-            else: raise ValueError("Cannot determine simple inverse for Hawaiian age model of %s given model with %d parameters"%(hs2,len(inv_data[hs2]["HIpols"])))
-            hs2_geodict = geoid.ArcDirect(inv_data[hs2]["HILat"],inv_data[hs2]["HILon"],inv_data[hs2]["HI_start_azi"]+age2_dis,-inv_data[hs2]["HIDis"]) #modeled geographic point for age
-            hs2_a = np.sqrt(2)*np.sqrt((inv_data[hs2]["HIsds"][1]**2)*(inv_data[hs2]["HIpols"][1]/inv_data[hs2]["HIpols"][0])**2 + (inv_data[hs2]["HIsds"][0]**2)*(-((age)-inv_data[hs2]["HIpols"][1])*inv_data[hs2]["HIpols"][0]**-2)**2)*np.sin(np.deg2rad(inv_data[hs2]["HIDis"]))
-            hs2_b = np.sqrt(2)*(33./111.113)
-            hs2_phi = (hs2_geodict["azi2"]+90.)
-#            print(hs2,inv_data[hs2]["HILat"],inv_data[hs2]["HILon"],inv_data[hs2]["HI_start_azi"],age,age2_dis,hs2_geodict["lat2"],hs2_geodict["lon2"],hs2_geodict["azi1"])
-
-            if np.isnan(hs1_geodict["lat2"]) or np.isnan(hs1_geodict["lon2"]) or np.isnan(hs2_geodict["lat2"]) or np.isnan(hs2_geodict["lon2"]): continue
-            IHS_geodict = geoid.Inverse(hs1_geodict["lat2"],hs1_geodict["lon2"],hs2_geodict["lat2"],hs2_geodict["lon2"])
-            hs1_sd = (hs1_a*hs1_b)/np.sqrt((hs1_a*np.sin(np.deg2rad(hs1_phi-IHS_geodict["azi1"])))**2 + (hs1_b*np.cos(np.deg2rad(hs1_phi-IHS_geodict["azi1"])))**2)/np.sqrt(2)
-            hs2_sd = (hs2_a*hs2_b)/np.sqrt((hs2_a*np.sin(np.deg2rad(hs2_phi-IHS_geodict["azi2"])))**2 + (hs2_b*np.cos(np.deg2rad(hs2_phi-IHS_geodict["azi2"])))**2)/np.sqrt(2)
-            hi_inter_hs_dis.append(IHS_geodict["a12"])
-            hi_azis.append(IHS_geodict["azi1"])
-            hi_inter_hs_dis_sds.append(np.sqrt(hs1_sd**2+hs2_sd**2))
-            hi_ages.append(age)
-
-        ax_dis.plot(hi_ages,111.113*(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0]),color=color)
-        ax_dis.plot(hi_ages,111.113*(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0]+2*np.array(hi_inter_hs_dis_sds)),color=color,linestyle=":")
-        ax_dis.plot(hi_ages,111.113*(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0]-2*np.array(hi_inter_hs_dis_sds)),color=color,linestyle=":")
-        ax_dis.fill_between(hi_ages, 111.113*(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0]+2*np.array(hi_inter_hs_dis_sds)), 111.113*(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0]-2*np.array(hi_inter_hs_dis_sds)), color=color, alpha=0.2,zorder=-1)
-
-        ax_div.plot(hi_ages[:-1],111.113*(np.diff(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0])/age_step_dis),color=hi_color)
-        hi_rate_sds = 111.113*np.sqrt((np.array(hi_inter_hs_dis_sds[:-1])**2 + np.array(hi_inter_hs_dis_sds[1:])**2)/age_step_dis**2)
-        print("%s-%s"%(hs1,hs2))
-        print("\tHI Max Dis",111.113*(hi_inter_hs_dis[-1] - hi_inter_hs_dis[0]))
-        print("\tHI Max Dis Unc",111.113*hi_inter_hs_dis_sds[-1])
-        print("\tHI Avg Rate",111.113*((hi_inter_hs_dis[-1] - hi_inter_hs_dis[0])/(hi_ages[-1]-hi_ages[0])))
-        print("\tHI Avg. Rate Unc Old Method",(111.113/30.)*np.sqrt((hi_inter_hs_dis_sds[0]**2 + hi_inter_hs_dis_sds[-1]**2)))
-        print("\tHI Avg. Rate Unc",111.113*np.sqrt((hi_inter_hs_dis_sds[-1]**2 + hi_inter_hs_dis_sds[0]**2)/((hi_ages[-1]-hi_ages[0])**2)))
-        print("\tMean HI Rate Unc",sum(hi_rate_sds)/len(hi_rate_sds)/((hi_ages[-1]-hi_ages[0])))
-#        import pdb; pdb.set_trace()
-#        ax_div.plot(hi_ages[:-1],np.diff(np.array(hi_inter_hs_dis)-hi_inter_hs_dis[0])/np.diff(hi_ages) + ,color=hi_color)
-
-    em_inter_hs_dis,em_inter_hs_dis_sds,em_azis,em_ages = [],[],[],[]
-    for age in em_ages_iter:
-        if len(inv_data[hs1]["EMpols"])==2: age1_dis = ((age-inv_data[hs1]["EMpols"][1])/inv_data[hs1]["EMpols"][0] - (inv_data[hs1]["EM_dated_data"].iloc[0]["Dis"]))/np.sin(np.deg2rad(inv_data[hs1]["EMDis"]))
-        elif len(inv_data[hs1]["EMpols"])==3: age1_dis = ((((-inv_data[hs1]["EMpols"][1]+np.sqrt(inv_data[hs1]["EMpols"][1]**2 - 4*inv_data[hs1]["EMpols"][0]*(inv_data[hs1]["EMpols"][2]-age)))/(2*inv_data[hs1]["EMpols"][0]))) - inv_data[hs1]["EM_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs1]["EMDis"]))
-        else: raise ValueError("Cannot determine simple inverse for Emperor age model of %s given model with %d parameters"%(hs1,len(inv_data[hs1]["EMpols"])))
-        hs1_geodict = geoid.ArcDirect(inv_data[hs1]["EMLat"],inv_data[hs1]["EMLon"],inv_data[hs1]["EM_start_azi"]+age1_dis,-inv_data[hs1]["EMDis"]) #modeled geographic point for age
-        hs1_a = np.sqrt(2)*np.sqrt((inv_data[hs1]["EMsds"][1]**2)*(inv_data[hs1]["EMpols"][1]/inv_data[hs1]["EMpols"][0])**2 + (inv_data[hs1]["EMsds"][0]**2)*(-(age-inv_data[hs1]["EMpols"][1])*inv_data[hs1]["EMpols"][0]**-2)**2)*np.sin(np.deg2rad(inv_data[hs1]["EMDis"]))
-        hs1_b = np.sqrt(2)*(33./111.113)
-        hs1_phi = (hs1_geodict["azi2"]+90.)
-#        print(hs1,inv_data[hs1]["EMLat"],inv_data[hs1]["EMLon"],inv_data[hs1]["EM_start_azi"],age,age1_dis,hs1_geodict["lat2"],hs1_geodict["lon2"],hs1_geodict["azi1"])
-
-        if len(inv_data[hs2]["EMpols"])==2: age2_dis = ((age-inv_data[hs2]["EMpols"][1])/inv_data[hs2]["EMpols"][0] - (inv_data[hs2]["EM_dated_data"].iloc[0]["Dis"]))/np.sin(np.deg2rad(inv_data[hs2]["EMDis"]))
-        elif len(inv_data[hs2]["EMpols"])==3: age2_dis = ((((-inv_data[hs2]["EMpols"][1]+np.sqrt(inv_data[hs2]["EMpols"][1]**2 - 4*inv_data[hs2]["EMpols"][0]*(inv_data[hs2]["EMpols"][2]-age)))/(2*inv_data[hs2]["EMpols"][0]))) - inv_data[hs2]["EM_dated_data"].iloc[0]["Dis"])/np.sin(np.deg2rad(inv_data[hs2]["EMDis"]))
-        else: raise ValueError("Cannot determine simple inverse for Emperor age model of %s given model with %d parameters"%(hs2,len(inv_data[hs2]["EMpols"])))
-        hs2_geodict = geoid.ArcDirect(inv_data[hs2]["EMLat"],inv_data[hs2]["EMLon"],inv_data[hs2]["EM_start_azi"]+age2_dis,-inv_data[hs2]["EMDis"]) #modeled geograpEMc point for age
-        hs2_a = np.sqrt(2)*np.sqrt((inv_data[hs2]["EMsds"][1]**2)*(inv_data[hs2]["EMpols"][1]/inv_data[hs2]["EMpols"][0])**2 + (inv_data[hs2]["EMsds"][0]**2)*(-(age-inv_data[hs2]["EMpols"][1])*inv_data[hs2]["EMpols"][0]**-2)**2)*np.sin(np.deg2rad(inv_data[hs2]["EMDis"]))
-        hs2_b = np.sqrt(2)*(33./111.113)
-        hs2_phi = (hs2_geodict["azi2"]+90.)
-#        print(hs2,inv_data[hs2]["EMLat"],inv_data[hs2]["EMLon"],inv_data[hs2]["EM_start_azi"],age,age2_dis,hs2_geodict["lat2"],hs2_geodict["lon2"],hs2_geodict["azi1"])
-
-        if np.isnan(hs1_geodict["lat2"]) or np.isnan(hs1_geodict["lon2"]) or np.isnan(hs2_geodict["lat2"]) or np.isnan(hs2_geodict["lon2"]): continue
-        IHS_geodict = geoid.Inverse(hs1_geodict["lat2"],hs1_geodict["lon2"],hs2_geodict["lat2"],hs2_geodict["lon2"])
-        hs1_sd = (hs1_a*hs1_b)/np.sqrt((hs1_a*np.sin(np.deg2rad(hs1_phi-IHS_geodict["azi1"])))**2 + (hs1_b*np.cos(np.deg2rad(hs1_phi-IHS_geodict["azi1"])))**2)/np.sqrt(2)
-        hs2_sd = (hs2_a*hs2_b)/np.sqrt((hs2_a*np.sin(np.deg2rad(hs2_phi-IHS_geodict["azi2"])))**2 + (hs2_b*np.cos(np.deg2rad(hs2_phi-IHS_geodict["azi2"])))**2)/np.sqrt(2)
-        em_inter_hs_dis.append(IHS_geodict["a12"])
-        em_azis.append(IHS_geodict["azi1"])
-        em_inter_hs_dis_sds.append(np.sqrt(hs1_sd**2+hs2_sd**2))
-        em_ages.append(age)
-
-    if hs1!="Rurutu" and hs2!="Rurutu": start_dis = hi_inter_hs_dis[0]
-    else: start_dis = em_inter_hs_dis[0]
-
-#    import pdb; pdb.set_trace()
-
-    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis),color=color,label="%s-%s"%(hs1,hs2))
-    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis+2*np.array(em_inter_hs_dis_sds)),color=color,linestyle=":")
-    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis-2*np.array(em_inter_hs_dis_sds)),color=color,linestyle=":")
-    if "%s-%s"%(hs1,hs2) != "Hawaii-Louisville HK19" and "%s-%s"%(hs1,hs2) != "Louisville HK19-Hawaii": alpha=.1
-    else: alpha=.3
-    ax_dis.fill_between(em_ages, 111.113*(np.array(em_inter_hs_dis)-start_dis+2*np.array(em_inter_hs_dis_sds)), 111.113*(np.array(em_inter_hs_dis)-start_dis-2*np.array(em_inter_hs_dis_sds)), color=color, alpha=alpha,zorder=-1)
-
-
-    ax_div.plot(em_ages[:-1],111.113*(np.diff(np.array(em_inter_hs_dis)-em_inter_hs_dis[0])/age_step_dis),color=em_color)
-    em_rate_sds = 111.113*np.sqrt((np.array(em_inter_hs_dis_sds[:-1])**2 + np.array(em_inter_hs_dis_sds[1:])**2)/age_step_dis**2)
-    print("%s-%s"%(hs1,hs2))
-    print("\tEM Max Dis",111.113*(em_inter_hs_dis[-1] - em_inter_hs_dis[0]))
-    print("\tEM Max Dis Unc",111.113*em_inter_hs_dis_sds[-1])
-    print("\tEM Avg Rate",111.113*((em_inter_hs_dis[-1] - em_inter_hs_dis[0])/(em_ages[-1]-em_ages[0])))
-    print("\tEM Avg. Rate Unc Old Method",(111.113/30.)*np.sqrt((em_inter_hs_dis_sds[0]**2 + em_inter_hs_dis_sds[-1]**2)))
-    print("\tEM Avg. Rate Unc",111.113*np.sqrt((em_inter_hs_dis_sds[-1]**2 + em_inter_hs_dis_sds[0]**2)/((em_ages[-1]-em_ages[0])**2)))
-    print("\tMean EM Rate Unc",sum(em_rate_sds)/len(em_rate_sds)/((em_ages[-1]-em_ages[0])))
-    ax_div.set_title("%s-%s"%(hs1,hs2))
-    ax_div.set_xlim(0.,80.)
-#    ax_div.set_ylim(-10.,25.)
-
-    dis_pos += 1
-    div_pos += 1
-
-ax_dis.legend(framealpha=.7)
-ax_dis.set_xlabel("Age (Ma)")
-ax_dis.set_ylabel("Change in Hotspot Distance Relative to Present (km)")
-ax_dis.set_title("Inter-Hotspot Distances")
-ax_dis.set_ylim(-1500.,2500.)
-ax_dis.set_xlim(0.,80.)
-
-fig_dis.savefig("./results/3const_Bend_IHSD_%ddeg.png"%deg,dpi=200,bbox_inches="tight")
-fig_dis.savefig("./results/3const_Bend_IHSD_%ddeg.pdf"%deg,dpi=200,bbox_inches="tight")
-fig_div.savefig("./results/3const_Bend_IHSR_%ddeg.pdf"%deg,dpi=200,bbox_inches="tight")
-
-
 

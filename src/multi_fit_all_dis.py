@@ -90,10 +90,6 @@ for inv_data_path in sys.argv[1:]:
 
     ax_dis = fig_dis.add_subplot(dis_pos)
 
-    fig_div = plt.figure(figsize=(8,11),dpi=200)
-    fig_div.subplots_adjust(left=padding,bottom=padding,right=1-padding,top=1-padding,wspace=0.05,hspace=0.2)
-    div_pos = 311
-
     if inv_data_path==sys.argv[-1]:
         ax_dis.tick_params(
         axis='both',          # changes the axis to apply changes
@@ -127,17 +123,16 @@ for inv_data_path in sys.argv[1:]:
         labelsize=fontsize) #changes size of tick labels
         ax_dis.set_yticks(np.arange(-500,2500,500))
 
-    for k,(hs1,hs2) in enumerate(subsets(["Hawaii","Rurutu","Louisville (Heaton & Koppers 2019)"],2)):
+    for k,(hs1,hs2) in enumerate(subsets(["Hawaii","Rurutu","Louisville HK19"],2)):
 #        print(hs1,"-",hs2)
         color = plt.rcParams['axes.prop_cycle'].by_key()['color'][k]
-        ax_div = fig_div.add_subplot(div_pos)
-        hs1_data = pd.read_excel("data/pa_seamount_ages_updated_Koopers2019.xlsx",hs1)
+        hs1_data = pd.read_excel("../data/pa_seamount_ages_subareal_included.xlsx",hs1)
         hs1_data = hs1_data[hs1_data["Quality"]=="g"]
-        hs2_data = pd.read_excel("data/pa_seamount_ages_updated_Koopers2019.xlsx",hs2)
+        hs2_data = pd.read_excel("../data/pa_seamount_ages_subareal_included.xlsx",hs2)
         hs2_data = hs2_data[hs2_data["Quality"]=="g"]
         print("Circular Unc: ",np.sqrt(2)*(33./111.113)*(inv_data[hs1]["HIErr"]/(len(hs1_data.index)-3)),np.sqrt(2)*(33./111.113)*(inv_data[hs2]["HIErr"]/(len(hs2_data.index)-3)))
 
-        if "Louisville" in hs1 and hs2=="Rurutu": hs1,hs2="Rurutu","Louisville (Heaton & Koppers 2019)"
+        if "Louisville" in hs1 and hs2=="Rurutu": hs1,hs2="Rurutu","Louisville HK19"
 
         if hs1!="Rurutu" and hs2!="Rurutu":
             inter_hs_dis,inter_hs_dis_sds,azis,ages,south_dis,south_sds = [],[],[],np.arange(0.,80.+age_step_dis,age_step_dis),[],[]
@@ -285,14 +280,6 @@ for inv_data_path in sys.argv[1:]:
         rate_sds[em_idx:] = rate_sds[em_idx:]/(80-bend_age)
         print(bend_age,rate_sds[em_idx:].min(),np.median(rate_sds[em_idx:]),rate_sds[em_idx:].mean(),rate_sds[em_idx:].max())
 #        if hs1!="Rurutu" and hs2!="Rurutu":
-        ax_div.plot(ages[:hi_idx],rates[:hi_idx],color=color)
-        ax_div.fill_between(ages[:hi_idx],rates[:hi_idx]-2*rate_sds[:hi_idx],rates[:hi_idx]+2*rate_sds[:hi_idx],color=color,alpha=.2)
-#            ax_div.plot(ages[:hi_idx],rates[:hi_idx]+2*rate_sds[:hi_idx],color=color,linestyle="--")
-#            ax_div.plot(ages[:hi_idx],rates[:hi_idx]-2*rate_sds[:hi_idx],color=color,linestyle="--")
-        ax_div.plot(ages[em_idx:-1],rates[em_idx:],color=color)
-        ax_div.fill_between(ages[em_idx:-1],rates[em_idx:]-2*rate_sds[em_idx:],rates[em_idx:]+2*rate_sds[em_idx:],color=color,alpha=.2)
-#        ax_div.plot(ages[em_idx:-1],rates[em_idx:]+2*rate_sds[em_idx:],color=color,linestyle=":")
-#        ax_div.plot(ages[em_idx:-1],rates[em_idx:]-2*rate_sds[em_idx:],color=color,linestyle=":")
         print("-------------------------%s-%s"%(hs1,hs2))
         print("\tMax Dis",111.113*(inter_hs_dis[-1] - inter_hs_dis[0]))
         print("\tMax Dis Unc",111.113*inter_hs_dis_sds[-1])
@@ -305,72 +292,25 @@ for inv_data_path in sys.argv[1:]:
         print("\tHI Avg Rate",111.113*((inter_hs_dis[hi_idx] - inter_hs_dis[0])/(ages[hi_idx]-ages[0])),sum(rates[:hi_idx])/len(rates[:hi_idx]))
         print("\tHI Rate Range",min(rates[:hi_idx]),max(rates[:hi_idx]))
         print("\tHI Avg. Rate Unc",111.113*np.sqrt((inter_hs_dis_sds[hi_idx]**2 + inter_hs_dis_sds[0]**2)/((ages[hi_idx]-ages[0])**2)))
-        print("\tMean HI Rate Unc",np.sqrt(sum(rate_sds[:hi_idx]**2)/len(rate_sds[:hi_idx])))
-    #        ax_div.plot(ages[:hi_idx],np.diff(np.array(inter_hs_dis)-inter_hs_dis[0])/np.diff(ages) + ,color=color)
-        print("\tHI Avg Southward Rate",111.113*((south_dis[hi_idx] - south_dis[0])/(ages[hi_idx]-ages[0])),sum(south_rates[:hi_idx])/len(south_rates[:hi_idx]))
-        print("\tHI Southward Rate Range",min(south_rates[:hi_idx]),max(south_rates[:hi_idx]))
-        print("\tHI Avg. Southward Rate Unc Old Method",(111.113/(ages[hi_idx]-ages[0]))*np.sqrt((south_sds[0]**2 + south_sds[hi_idx]**2)))
+#        print("\tMean HI Rate Unc",np.sqrt(sum(rate_sds[:hi_idx]**2)/len(rate_sds[:hi_idx])))
+#        print("\tHI Avg Southward Rate",111.113*((south_dis[hi_idx] - south_dis[0])/(ages[hi_idx]-ages[0])),sum(south_rates[:hi_idx])/len(south_rates[:hi_idx]))
+#        print("\tHI Southward Rate Range",min(south_rates[:hi_idx]),max(south_rates[:hi_idx]))
+#        print("\tHI Avg. Southward Rate Unc Old Method",(111.113/(ages[hi_idx]-ages[0]))*np.sqrt((south_sds[0]**2 + south_sds[hi_idx]**2)))
 
         print("-------------------------")
 
         print("\tEM Avg Rate",111.113*((inter_hs_dis[-1] - inter_hs_dis[em_idx])/(ages[-1]-ages[em_idx])),sum(rates[em_idx:])/len(rates[em_idx:]))
         print("\tEM Rate Range",min(rates[em_idx:]),max(rates[em_idx:]))
         print("\tEM Avg. Rate Unc",111.113*np.sqrt((inter_hs_dis_sds[-1]**2 + inter_hs_dis_sds[em_idx]**2)/((ages[-1]-ages[em_idx])**2)))
-        print("\tMean EM Rate Unc",np.sqrt(sum(rate_sds[em_idx:]**2)/len(rate_sds[em_idx:])))
-    #        ax_div.plot(ages[:-1],np.diff(np.array(inter_hs_dis)-inter_hs_dis[em_idx])/np.diff(ages) + ,color=color)
-        print("\tEM Avg Southward Rate",111.113*((south_dis[-1] - south_dis[em_idx])/(ages[-1]-ages[em_idx])),sum(south_rates[em_idx:])/len(south_rates[em_idx:]))
-        print("\tEM Southward Rate Range",min(south_rates[em_idx:]),max(south_rates[em_idx:]))
-        print("\tEM Avg. Southward Rate Unc Old Method",(111.113/(ages[-1]-ages[em_idx]))*np.sqrt((south_sds[em_idx]**2 + south_sds[-1]**2)))
-
-    ##        m.plot([(360+hs1_geodict["lon2"])%360,(360+hs2_geodict["lon2"])%360],[hs1_geodict["lat2"],hs2_geodict["lat2"]],color="k",transform=ccrs.PlateCarree(),zorder=0)
-    #        if age!=em_ages[0]:
-    #            m.plot([(360+prev_hs1_geodict["lon2"])%360,(360+hs1_geodict["lon2"])%360],[prev_hs1_geodict["lat2"],hs1_geodict["lat2"]],color=em_color,transform=ccrs.PlateCarree())
-    #            m.plot([(360+prev_hs2_geodict["lon2"])%360,(360+hs2_geodict["lon2"])%360],[prev_hs2_geodict["lat2"],hs2_geodict["lat2"]],color=hi_color,transform=ccrs.PlateCarree())
-    #        prev_hs1_geodict = hs1_geodict
-    #        prev_hs2_geodict = hs2_geodict
-
-    #    if hs1!="Rurutu" and hs2!="Rurutu": start_dis = hi_inter_hs_dis[0]
-    #    else: start_dis = em_inter_hs_dis[0]
-    #    if "Louisville" in hs1: hs1="Louisville"
-    #    if "Louisville" in hs2: hs2="Louisville"
-
-    #    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis),color=color,label="%s-%s"%(hs1,hs2))
-    #    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis+2*np.array(em_inter_hs_dis_sds)),color=color,linestyle=":")
-    #    ax_dis.plot(em_ages,111.113*(np.array(em_inter_hs_dis)-start_dis-2*np.array(em_inter_hs_dis_sds)),color=color,linestyle=":")
-    #    if "%s-%s"%(hs1,hs2) != "Hawaii-Louisville (Heaton & Koppers 2019)" and "%s-%s"%(hs1,hs2) != "Louisville (Heaton & Koppers 2019)-Hawaii": alpha=.1
-    #    else: alpha=.3
-    #    ax_dis.fill_between(em_ages, 111.113*(np.array(em_inter_hs_dis)-start_dis+2*np.array(em_inter_hs_dis_sds)), 111.113*(np.array(em_inter_hs_dis)-start_dis-2*np.array(em_inter_hs_dis_sds)), color=color, alpha=alpha,zorder=-1)
-
-
-    #    em_rates = 111.113*(np.diff(np.array(em_inter_hs_dis)-start_dis)/age_step_dis)
-    #    em_south_rates = 111.113*(np.diff(np.array(em_south_dis)-start_dis)/age_step_dis)
-    ##    em_south_rates = em_rates*np.cos(np.deg2rad(180-np.array(em_azis[:-1])))
-    #    ax_div.plot(em_ages[:-1],em_south_rates,color=em_color)
-    #    em_rate_sds = 111.113*np.sqrt((np.array(em_inter_hs_dis_sds[:-1])**2 + np.array(em_inter_hs_dis_sds[1:])**2)/age_step_dis**2)/((em_ages[-1]-em_ages[0]))
-    ##    ax_div.plot(em_ages[:-1],111.113*(np.diff(np.array(em_inter_hs_dis)-em_inter_hs_dis[0])/age_step_dis)+2*em_rate_sds,color=em_color,linestyle=":")
-    ##    ax_div.plot(em_ages[:-1],111.113*(np.diff(np.array(em_inter_hs_dis)-em_inter_hs_dis[0])/age_step_dis)-2*em_rate_sds,color=em_color,linestyle=":")
-    ##    ax_div.fill_between(em_ages[:-1],111.113*(np.diff(np.array(em_inter_hs_dis)-em_inter_hs_dis[0])/age_step_dis)+2*em_rate_sds,111.113*(np.diff(np.array(em_inter_hs_dis)-em_inter_hs_dis[0])/age_step_dis)-2*em_rate_sds,color=em_color,alpha=.2)
-    #    print("%s-%s"%(hs1,hs2))
-    #    print("\tEM Max Dis",111.113*(em_inter_hs_dis[-1]-start_dis))
-    #    print("\tEM Max Dis Unc",111.113*em_inter_hs_dis_sds[-1])
-    #    print("\tEM Avg Rate",111.113*((em_inter_hs_dis[-1] - em_inter_hs_dis[0])/(em_ages[-1]-em_ages[0])),sum(em_rates)/len(em_rates))
-    #    print("\tEM Rate Range",min(em_rates),max(em_rates))
-    #    print("\tEM Avg. Rate Unc Old Method",(111.113/(em_ages[-1]-em_ages[0]))*np.sqrt((em_inter_hs_dis_sds[0]**2 + em_inter_hs_dis_sds[-1]**2)))
-    #    print("\tEM Avg. Rate Unc",111.113*np.sqrt((em_inter_hs_dis_sds[-1]**2 + em_inter_hs_dis_sds[0]**2)/((em_ages[-1]-em_ages[0])**2)))
-    #    print("\tMean EM Rate Unc",sum(em_rate_sds)/len(em_rate_sds))#/((em_ages[-1]-em_ages[0])))
-
-    #    print("\tEM Avg Southward Rate",111.113*((em_south_dis[-1] - em_south_dis[0])/(em_ages[-1]-em_ages[0])),sum(em_south_rates)/len(em_south_rates))
-    #    print("\tEM Southward Rate Range",min(em_south_rates),max(em_south_rates))
-    #    print("\tEM Avg. Southward Rate Unc Old Method",(111.113/(em_ages[-1]-em_ages[0]))*np.sqrt((em_south_sds[0]**2 + em_south_sds[-1]**2)))
+#        print("\tMean EM Rate Unc",np.sqrt(sum(rate_sds[em_idx:]**2)/len(rate_sds[em_idx:])))
+#        print("\tEM Avg Southward Rate",111.113*((south_dis[-1] - south_dis[em_idx])/(ages[-1]-ages[em_idx])),sum(south_rates[em_idx:])/len(south_rates[em_idx:]))
+#        print("\tEM Southward Rate Range",min(south_rates[em_idx:]),max(south_rates[em_idx:]))
+#        print("\tEM Avg. Southward Rate Unc Old Method",(111.113/(ages[-1]-ages[em_idx]))*np.sqrt((south_sds[em_idx]**2 + south_sds[-1]**2)))
 
         if "Louisville" in hs1: title1,title2 = "Louisville",hs2
         elif "Louisville" in hs2: title1,title2 = hs1,"Louisville"
         else: title1,title2 = hs1,hs2
-        ax_div.set_title("%s-%s"%(title1,title2),fontsize=title_fontsize)
-        ax_div.set_xlim(0.,80.)
-        ax_div.set_ylim(-20.,50.)
 
-        div_pos += 1
     #    m.set_global()
     #    plt.show()
     #    sys.exit()
@@ -389,6 +329,5 @@ for inv_data_path in sys.argv[1:]:
 
     dis_pos += 1
 
-fig_dis.savefig("./results/Bend_IHSD.png",dpi=200,bbox_inches="tight")
-fig_dis.savefig("./results/Bend_IHSD.pdf",dpi=200,bbox_inches="tight",transparent=True)
-fig_div.savefig("./results/Bend_IHSR.pdf",dpi=200,bbox_inches="tight")
+fig_dis.savefig("../results/Bend_IHSD.png",dpi=200,bbox_inches="tight")
+fig_dis.savefig("../results/Bend_IHSD.pdf",dpi=200,bbox_inches="tight",transparent=True)
