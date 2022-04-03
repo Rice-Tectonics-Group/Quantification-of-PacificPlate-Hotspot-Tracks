@@ -1,7 +1,7 @@
 # Quantification of Pacific Plate Hotspot Tracks
 
 This repository contains the data and results of the Tectonics manuscript "Quantification of Pacific Plate Hotspot Tracks 
-Since 80 Ma and the Relative Timing of Eocene Plate Tectonic Events" by Kevin Gaastra, Richard Gordon, and Daniel Woodworth
+Since 80 Ma" by Kevin Gaastra, Richard Gordon, and Daniel Woodworth
 
 ## Software
 

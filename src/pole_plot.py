@@ -139,7 +139,7 @@ inv_data_path = "/home/kevin/Projects/DispursionOfHSAges/data/Bend_Inversion_dat
 rec_path = "/home/kevin/Projects/DispursionOfHSAges/data/reconstructions/PA_nhotspot_inversion.csv"
 hi_color = "#C4A58E"#plt.rcParams['axes.prop_cycle'].by_key()['color'][2]
 em_color = plt.rcParams['axes.prop_cycle'].by_key()['color'][1]
-bend_resolution = .1
+bend_resolution = 5.0
 geoid = Geodesic(6731.,0.)#Geodesic.WGS84
 ignore_bend = True
 
@@ -212,19 +212,8 @@ for hs in inv_data.columns:
     data["Min"] = (33.0/111.113)*np.sqrt(2) #seamount 1d 1sigma from Chengzu
     data["Azi"] = 0.0 #Circular
 
-    if hs == "Hawaii":
-        hi_data = data[data["Latitude"]<33.]
-        tr_data = data[(data["Latitude"]>33.) & (data["Latitude"]<33.)]
-        em_data = data[data["Latitude"]>33.]
-    elif "Louisville" in hs:
-        hi_data = data[data["Longitude"]>-169.]
-        tr_data = data[(data["Longitude"]>-169.) & (data["Longitude"]<=-169.)]
-        em_data = data[data["Longitude"]<-169.]
-    elif hs == "Rurutu":
-        cut_age = 20.
-        hi_data = data[data["Age (Ma)"]<cut_age]
-        tr_data = data[(data["Age (Ma)"]>cut_age) & (data["Age (Ma)"]<cut_age)]
-        em_data = data[data["Age (Ma)"]>=cut_age]
+    hi_data = data[data["SubTrack"]=="HI"]
+    em_data = data[data["SubTrack"]=="EM"]
 
     good_hi_data = hi_data[hi_data["Quality"]=="g"]
     good_em_data = em_data[em_data["Quality"]=="g"]
@@ -262,11 +251,15 @@ for hs in inv_data.columns:
     if inv_data[hs]["EMLat"]<0: inv_data[hs]["EMLat"],inv_data[hs]["EMLon"] = -inv_data[hs]["EMLat"],(360+180+inv_data[hs]["EMLon"])%360
     if hs == "Hawaii" and inv_data[hs]["EMLat"]>0: inv_data[hs]["EMLat"],inv_data[hs]["EMLon"] = -inv_data[hs]["EMLat"],(360+180+inv_data[hs]["EMLon"])%360
     m = psk.plot_pole(inv_data[hs]["HILon"],inv_data[hs]["HILat"],0.,0.01,0.01,marker='o',color=color,m=m,zorder=10,alpha=.3)
-    m.contour(lon_mesh,lat_mesh,ep2_chi2_surf,levels = [min_tot_error+2*4], colors=[color], linewidths=[1], transform=ccrs.PlateCarree(), zorder=10)
+    hi_cont = m.contour(lon_mesh,lat_mesh,ep2_chi2_surf,levels = [min_tot_error+2*4], colors=[color], linewidths=[1], transform=ccrs.PlateCarree(), zorder=10)
     m = psk.plot_pole(inv_data[hs]["EMLon"],inv_data[hs]["EMLat"],0.,0.01,0.01,marker='s',color=color,m=m,zorder=10,alpha=.3)
-    m.contour(lon_mesh,lat_mesh,ep1_chi2_surf,levels = [min_tot_error+2*4], colors=[color], linewidths=[1], transform=ccrs.PlateCarree(), zorder=10)
+    em_cont = m.contour(lon_mesh,lat_mesh,ep1_chi2_surf,levels = [min_tot_error+2*4], colors=[color], linewidths=[1], transform=ccrs.PlateCarree(), zorder=10)
+    hi_p = hi_cont.collections[0].get_paths()[0]
     np.savetxt("%s_HISubTrack.txt"%hs,ep2_chi2_surf)
+    np.savetxt("%s_HI2sig_contour.txt"%hs,hi_p.vertices)
+    em_p = em_cont.collections[0].get_paths()[0]
     np.savetxt("%s_EMSubTrack.txt"%hs,ep1_chi2_surf)
+    np.savetxt("%s_EM2sig_contour.txt"%hs,em_p.vertices)
 
 hi_fmean = ipmag.fisher_mean(inv_data.T["HILon"].tolist(),inv_data.T["HILat"].tolist())
 em_fmean = ipmag.fisher_mean(inv_data.T["EMLon"].tolist(),inv_data.T["EMLat"].tolist())
