@@ -3,6 +3,8 @@
 This repository contains the data and results of the Tectonics manuscript "Quantification of Pacific Plate Hotspot Tracks 
 Since 80 Ma" by Kevin Gaastra, Richard Gordon, and Daniel Woodworth
 
+[![DOI](https://zenodo.org/badge/376572858.svg)](https://zenodo.org/badge/latestdoi/376572858)
+
 ## Software
 
 The src folder contains primarily python 3.7 based software in the src folder though there are also 
